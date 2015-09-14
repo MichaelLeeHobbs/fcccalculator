@@ -75,7 +75,7 @@ angular.module('myApp', [
                         operator = opAdd(lastInput);
                         curInput = '';
                         haveDecimal = false;
-                        $scope.display = '';
+                        //$scope.display = '';
                     }
                     // case 2 operator is filled and no curInput
                     else if (curInput.length === 0) {
