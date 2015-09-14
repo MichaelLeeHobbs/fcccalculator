@@ -16,23 +16,57 @@ angular.module('myApp', [
 
     .controller('MainCtrl', ['$scope', function ($scope) {
         $scope.display = '1337';
-        var operandOne = 0.0;
-        var operandTwo = 0.0;
+        var operand = undefined;
         var operator = undefined;
         var curInput = '';
         var haveDecimal = false;
 
         // button functions
         $scope.opInput = function (input) {
+            if (input === 'opAC') {
+                operand = undefined;
+                operator = undefined;
+                curInput = '';
+                haveDecimal = false;
+                $scope.display = '';
+                return;
+            }
+            if (input === 'opCE') {
+                curInput = '';
+                haveDecimal = false;
+                $scope.display = '';
+                return;
+            }
+
+
+            // is curInput valid? if not reject
+            if (curInput.length < 0 || curInput === '.') {
+                return;
+            }
+
             switch (input) {
                 case 'opAdd':
-                case 'opAdd':
-                case 'opAdd':
-                case 'opAdd':
-                case 'opAdd':
+                    // sub case curInput is valid
+
+                    // case 1 operand is empty
+                    if (operand === undefined) {
+                        operand = parseFloat(curInput);
+                        operator = input;
+                    }
+                    // case 2 operand is filled
+                    else {
+
+                    }
+                case 'opSub':
+                case 'opMul':
+                case 'opDiv':
+                case 'opMod':
+                case 'opAC':
+                case 'opCE':
             }
             operator = 'opAdd';
-        };
+        }
+        ;
         $scope.input = function (input) {
             // validate input and update curInput
             switch (input) {
@@ -71,4 +105,6 @@ angular.module('myApp', [
             //$scope.display = curInput;
             console.log('display: ' + $scope.display);
         }
-    }]);
+    }
+    ])
+;
