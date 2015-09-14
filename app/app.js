@@ -23,41 +23,80 @@ angular.module('myApp', [
         var maxDigits = 9;
 
         // operators
-        var opAC = function () {
-            operator = undefined;
-            curInput = '';
-            lastInput = undefined;
-            haveDecimal = false;
-            $scope.display = '';
-        };
+        var operators = {
+            ac: function () {
+                operator = undefined;
+                curInput = '';
+                lastInput = undefined;
+                haveDecimal = false;
+                $scope.display = '0';
+            },
+            ce: function () {
+                curInput = '';
+                haveDecimal = false;
+                $scope.display = '0';
+            },
 
-        var opCE = function () {
-            curInput = '';
-            haveDecimal = false;
-            $scope.display = '';
-        };
+            eq: function () {
+                if (operator !== undefined && curInput.length > 0) {
+                    lastInput = operator(parseFloat(curInput));
+                    $scope.display = lastInput;
 
-        var opAdd = function (operandOne, operandTwo) {
-            if (operandTwo === undefined) {
-                return function(operandTwo) {
-                    console.log('inner opAdd');
-                    return operandOne + operandTwo;
-                };
+                    curInput = '';
+                    haveDecimal = '';
+                }
+            },
+            add: function (operandOne, operandTwo) {
+                if (operandTwo === undefined) {
+                    return function (operandTwo) {
+                        return operandOne + operandTwo;
+                    };
+                }
+                return operandOne + operandTwo;
+            },
+            sub: function (operandOne, operandTwo) {
+                if (operandTwo === undefined) {
+                    return function (operandTwo) {
+                        return operandOne - operandTwo;
+                    };
+                }
+                return operandOne - operandTwo;
+            },
+            mul: function (operandOne, operandTwo) {
+                if (operandTwo === undefined) {
+                    return function (operandTwo) {
+                        return operandOne * operandTwo;
+                    };
+                }
+                return operandOne * operandTwo;
+            },
+            div: function (operandOne, operandTwo) {
+                if (operandTwo === undefined) {
+                    return function (operandTwo) {
+                        return operandOne / operandTwo;
+                    };
+                }
+                return operandOne / operandTwo;
+            },
+            mod: function (operandOne, operandTwo) {
+                if (operandTwo === undefined) {
+                    return function (operandTwo) {
+                        return operandOne % operandTwo;
+                    };
+                }
+                return operandOne % operandTwo;
             }
-            return operandOne + operandTwo;
         };
 
-
-
-        // button functions
+        // input processors
         $scope.opInput = function (input) {
             // AC and CE are special cases
-            if (input === 'opAC') {
-                opAC();
+            if (input === 'ac') {
+                operators[input]();
                 return;
             }
-            if (input === 'opCE') {
-                opCE();
+            if (input === 'ce') {
+                operators[input]();
                 return;
             }
 
@@ -67,52 +106,37 @@ angular.module('myApp', [
                 return;
             }
 
-            switch (input) {
-                case 'opAdd':
-                    // case 1 operator is empty
-                    if (operator === undefined) {
-                        lastInput = parseFloat(curInput);
-                        operator = opAdd(lastInput);
-                        curInput = '';
-                        haveDecimal = false;
-                        //$scope.display = '';
-                    }
-                    // case 2 operator is filled and no curInput
-                    else if (curInput.length === 0) {
-                        var results = operator(lastInput);
-                        operator = opAdd(results);
-                        $scope.display = results;
+            var results;
+            // case 1 operator is empty
+            if (operator === undefined) {
+                lastInput = parseFloat(curInput);
+                operator = operators[input](lastInput);
+                curInput = '';
+                haveDecimal = false;
+                //$scope.display = '';
+            }
+            // case 2 operator is filled and no curInput
+            else if (curInput.length === 0) {
+                results = operator(lastInput);
+                operator = operators[input](results);
+                $scope.display = results;
 
-                        curInput = '';
-                        haveDecimal = '';
-
-                    }
-                    // case 3 operator is filled and have curInput
-                    else {
-                        var results = operator(parseFloat(curInput));
-                        operator = opAdd(results);
-                        $scope.display = results;
-
-                        curInput = '';
-                        haveDecimal = '';
-                    }
-                case 'opSub':
-                case 'opMul':
-                case 'opDiv':
-                case 'opMod':
-                case 'opEQ':
-                    if (operator !== undefined && curInput.length > 0) {
-                        var results = operator(parseFloat(curInput));
-                        lastInput = results;
-                        $scope.display = results;
-
-                        curInput = '';
-                        haveDecimal = '';
-                    }
+                curInput = '';
+                haveDecimal = '';
 
             }
-        }
-        ;
+            // case 3 operator is filled and have curInput
+            else {
+                results = operator(parseFloat(curInput));
+                operator = operators[input](results);
+                $scope.display = results;
+
+                curInput = '';
+                haveDecimal = '';
+            }
+
+        };
+
         $scope.input = function (input) {
             // validate input and update curInput
             switch (input) {
@@ -141,9 +165,7 @@ angular.module('myApp', [
                     if (curInput.length < maxDigits - 1 && !haveDecimal) {
                         curInput = curInput + input;
                         haveDecimal = true;
-                        // this solves the display issue when you only have a single number
-                        // and a decimal
-                        $scope.display = '.' + $scope.display;
+                        $scope.display = curInput;
                     }
             }
             console.log('input: ' + input);

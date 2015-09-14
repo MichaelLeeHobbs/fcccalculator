@@ -25,33 +25,33 @@
     <div class="row"><h4>Electronic Calculator</h4></div>
     <div class="row"><p class="display">{{display}}</p></div>
     <div class="row">
-        <button ng-click="opInput('opAC')" class="cell red">AC</button>
-        <button ng-click="opInput('opCE')" class="cell red">CE</button>
-        <button class="cell">%</button>
-        <button class="cell">/</button>
+        <button ng-click="opInput('ac')" class="cell red">AC</button>
+        <button ng-click="opInput('ce')" class="cell red">CE</button>
+        <button ng-click="opInput('mod')" class="cell">%</button>
+        <button ng-click="opInput('div')" class="cell">/</button>
     </div>
     <div class="row">
         <button ng-click="input('7')" class="cell">7</button>
         <button ng-click="input('8')" class="cell">8</button>
         <button ng-click="input('9')" class="cell">9</button>
-        <button class="cell">x</button>
+        <button ng-click="opInput('mul')" class="cell">x</button>
     </div>
     <div class="row">
         <button ng-click="input('4')" class="cell">4</button>
         <button ng-click="input('5')" class="cell">5</button>
         <button ng-click="input('6')" class="cell">6</button>
-        <button class="cell">-</button>
+        <button ng-click="opInput('sub')" class="cell">-</button>
     </div>
     <div class="row">
         <button ng-click="input('1')" class="cell">1</button>
         <button ng-click="input('2')" class="cell">2</button>
         <button ng-click="input('3')" class="cell">3</button>
-        <button ng-click="opInput('opAdd')" class="cell tall">+</button>
+        <button ng-click="opInput('add')" class="cell tall">+</button>
     </div>
     <div class="row">
         <button ng-click="input('0')" class="cell">0</button>
         <button ng-click="input('.')" class="cell">.</button>
-        <button ng-click="opInput('opEQ')" class="cell">=</button>
+        <button ng-click="opInput('eq')" class="cell">=</button>
     </div>
 
 </div>
