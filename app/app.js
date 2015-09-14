@@ -15,7 +15,7 @@ angular.module('myApp', [
     }])
 
     .controller('MainCtrl', ['$scope', function ($scope) {
-        $scope.display = '1337';
+        $scope.display = '0';
         var operator;
         var curInput = '';
         var lastInput;
@@ -100,8 +100,16 @@ angular.module('myApp', [
                 case 'opMul':
                 case 'opDiv':
                 case 'opMod':
-                case 'opAC':
-                case 'opCE':
+                case 'opEQ':
+                    if (operator !== undefined && curInput.length > 0) {
+                        var results = operator(parseFloat(curInput));
+                        lastInput = results;
+                        $scope.display = results;
+
+                        curInput = '';
+                        haveDecimal = '';
+                    }
+
             }
         }
         ;
