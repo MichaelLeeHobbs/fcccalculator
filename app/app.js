@@ -143,10 +143,9 @@ angular.module('myApp', [
 
                 case "0":
                     if (curInput.length < 1) {
-                        return;
+                        break;
                     }
                 case '1':
-                    console.log('1');
                 case "2":
                 case "3":
                 case "4":
@@ -155,7 +154,6 @@ angular.module('myApp', [
                 case "7":
                 case "8":
                 case "9":
-                    console.log('cis: ' + curInput.length)
                     if (curInput.length < maxDigits) {
                         curInput = curInput + input;
                         $scope.display = curInput;
@@ -168,13 +166,5 @@ angular.module('myApp', [
                         $scope.display = curInput;
                     }
             }
-            console.log('input: ' + input);
-            console.log('curInput: ' + curInput);
-            //$scope.display = curInput;
-            console.log('display: ' + $scope.display);
-        }
-
-
-    }
-    ])
-;
+        };
+    }]);
